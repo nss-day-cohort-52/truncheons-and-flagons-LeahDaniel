@@ -1,3 +1,4 @@
+import os
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from stat import FILE_ATTRIBUTE_REPARSE_POINT
@@ -90,5 +91,5 @@ def main():
 main()
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

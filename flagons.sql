@@ -2,9 +2,9 @@
 -- DELETE FROM Players;
 -- DELETE FROM TeamScore;
 
--- DROP TABLE IF EXISTS TeamScore;
--- DROP TABLE IF EXISTS Players;
--- DROP TABLE IF EXISTS Teams;
+DROP TABLE IF EXISTS TeamScore;
+DROP TABLE IF EXISTS Player;
+DROP TABLE IF EXISTS Team;
 
 CREATE TABLE `Teams` (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -13,19 +13,19 @@ CREATE TABLE `Teams` (
 
 CREATE TABLE `Players` (
     `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    `firstName`    TEXT NOT NULL,
-    `lastName`    TEXT NOT NULL,
-    `teamId` INTEGER NOT NULL,
-    FOREIGN KEY(`teamId`) REFERENCES `Teams`(`id`)
+    `first_name`    TEXT NOT NULL,
+    `last_name`    TEXT NOT NULL,
+    `team_id` INTEGER NOT NULL,
+    FOREIGN KEY(`team_id`) REFERENCES `Team`(`id`)
 );
 
 
-CREATE TABLE `TeamScore` (
+CREATE TABLE `TeamScores` (
 	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    `teamId` INTEGER NOT NULL,
+    `team_id` INTEGER NOT NULL,
 	`score`  TEXT NOT NULL,
-	`timeStamp` TEXT NOT NULL,
-    FOREIGN KEY(`teamId`) REFERENCES `Teams`(`id`)
+	`time_stamp` TEXT NOT NULL,
+    FOREIGN KEY(`team_id`) REFERENCES `Team`(`id`)
 );
 
 
@@ -44,10 +44,10 @@ INSERT INTO `Players` VALUES (null, "Bryan", "Nilsen", 3);
 INSERT INTO `Players` VALUES (null, "Jenna", "Solis", 3);
 INSERT INTO `Players` VALUES (null, "Ryan", "Tanay", 3);
 
-INSERT INTO `TeamScore` VALUES (null, 1, 3, 1583873462376);
-INSERT INTO `TeamScore` VALUES (null, 1, 2, 1583873462376);
-INSERT INTO `TeamScore` VALUES (null, 1, 4, 1583873462376);
-INSERT INTO `TeamScore` VALUES (null, 2, 1, 1583873462376);
-INSERT INTO `TeamScore` VALUES (null, 2, 6, 1583873462376);
-INSERT INTO `TeamScore` VALUES (null, 2, 3, 1583873462376);
+INSERT INTO `TeamScores` VALUES (null, 1, 3, 1583873462376);
+INSERT INTO `TeamScores` VALUES (null, 1, 2, 1583873462376);
+INSERT INTO `TeamScores` VALUES (null, 1, 4, 1583873462376);
+INSERT INTO `TeamScores` VALUES (null, 2, 1, 1583873462376);
+INSERT INTO `TeamScores` VALUES (null, 2, 6, 1583873462376);
+INSERT INTO `TeamScores` VALUES (null, 2, 3, 1583873462376);
 

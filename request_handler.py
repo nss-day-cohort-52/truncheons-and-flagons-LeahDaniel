@@ -1,6 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from teams.request import get_teams
+from stat import FILE_ATTRIBUTE_REPARSE_POINT
+from teams import get_teams, get_all_players, get_all_team_scores
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -19,16 +20,16 @@ class HandleRequests(BaseHTTPRequestHandler):
     def parse_url(self, path):
         id = None
         filters = None
-        url_parts = path.split("/")
+        url_parts = path.split("/") # localhost:8088/customers/1  localhost:8088/customers?_embed=blah&_expand=blah
         url_parts.pop(0)
 
-        resource = url_parts[1]
+        resource = url_parts[0]
         if "?" in resource:
             [resource, params] =  resource.split("?")
             filters = self.parse_query_string_parameters(params)
 
         try:
-            route_parameters = url_parts[2]
+            route_parameters = url_parts[1] #if grabbing a singular dictionary
             if "?" in route_parameters:
                 [id, params] = route_parameters.split("?")
                 id = int(id)
@@ -64,15 +65,34 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(200)
 
         response = {}
-        (resource, id, filters) = self.parse_url(self.path)
-        response = f"{get_teams(filters)}"
+        
+        # Parse URL and store entire tuple in a variable
+        parsed = self.parse_url(self.path)
+        
+        if len(parsed) > 2:
+            (resource, id, filters) = parsed
+            if resource == "teams":
+                if id is not None:
+                    response = f"{get_single_team(id)}"
+                else:
+                    response = f"{get_teams(filters)}"
+            elif resource == "players":
+                if id is not None:
+                    response = f"{get_single_player(id)}"
+                else:
+                    response = f"{get_all_players()}"
+            elif resource == "teamscores":
+                if id is not None:
+                    response = f"{get_single_team_score(id)}"
+                else:
+                    response = f"{get_all_team_scores()}"
 
         self.wfile.write(response.encode())
 
 
 def main():
     host = ''
-    port = 8089
+    port = 8088
     HTTPServer((host, port), HandleRequests).serve_forever()
 
 

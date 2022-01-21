@@ -72,28 +72,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         if len(parsed) > 2:
             (resource, id, filters) = parsed
             if resource == "teams":
-                if id is not None:
-                    response = f"{get_single_team(id)}"
-                else:
-                    response = f"{get_teams(filters)}"
+                response = f"{get_teams(filters)}"
             elif resource == "players":
-                if id is not None:
-                    response = f"{get_single_player(id)}"
-                else:
-                    response = f"{get_all_players()}"
+                response = f"{get_all_players()}"
             elif resource == "teamscores":
-                if id is not None:
-                    response = f"{get_single_team_score(id)}"
-                else:
-                    response = f"{get_all_team_scores()}"
+                response = f"{get_all_team_scores()}"
 
         self.wfile.write(response.encode())
 
 
 def main():
     host = ''
-    port = 8088
+    port = int(os.environ['PORT'])
     HTTPServer((host, port), HandleRequests).serve_forever()
+
+
+main()
 
 
 if __name__ == "__main__":
